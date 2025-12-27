@@ -1,5 +1,7 @@
 package com.termux.app;
 
+import android.view.Window;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
