@@ -1,5 +1,9 @@
 package com.termux.app;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -197,7 +201,7 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_termux);
-
+             updateStatusBar(); 
         // Load termux shared preferences
         // This will also fail if TermuxConstants.TERMUX_PACKAGE_NAME does not equal applicationId
         mPreferences = TermuxAppSharedPreferences.build(this, true);
@@ -921,5 +925,51 @@ public final class TermuxActivity extends Activity implements ServiceConnection 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
+
+    
+    private void updateStatusBar() {
+    // 1. Default to Black (Standard Termux)
+    int statusBarColor = 0xFF000000;
+
+    try {
+        // 2. Read the current theme color from file
+        File colorFile = new File("/data/data/com.termux/files/home/.termux/colors.properties");
+        if (colorFile.exists()) {
+            Properties props = new Properties();
+            FileInputStream fis = new FileInputStream(colorFile);
+            props.load(fis);
+            fis.close();
+
+            String bgHex = props.getProperty("background");
+            if (bgHex != null) statusBarColor = Color.parseColor(bgHex);
+        }
+    } catch (Exception e) {
+        // Ignore errors, keep default black
+    }
+
+    // 3. Set the Status Bar Color
+    Window window = getWindow();
+    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+    window.setStatusBarColor(statusBarColor);
+
+    // 4. Calculate Brightness (Luminance)
+    // Formula: 0.299*R + 0.587*G + 0.114*B
+    double brightness = (0.299 * Color.red(statusBarColor) + 
+                         0.587 * Color.green(statusBarColor) + 
+                         0.114 * Color.blue(statusBarColor));
+
+    // 5. Toggle Icon Color (Black or White)
+    View decor = window.getDecorView();
+    // If brightness > 128 (Light background), use Light Status Bar (Black Icons)
+    if (brightness > 128) {
+        decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    } else {
+        // Dark background -> White Icons (Clear the flag)
+        decor.setSystemUiVisibility(0);
+    }
+}
+
+
+    
 
 }
