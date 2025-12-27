@@ -1,5 +1,11 @@
 package com.termux.shared.terminal.io.extrakeys;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
+import android.graphics.Color;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
@@ -196,15 +202,51 @@ public final class ExtraKeysView extends GridLayout {
 
 
     public ExtraKeysView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.setBackgroundColor(0xFFFFFFFF);
-        setRepetitiveKeys(ExtraKeysConstants.PRIMARY_REPETITIVE_KEYS);
-        setSpecialButtons(getDefaultSpecialButtons(this));
-        setButtonColors(DEFAULT_BUTTON_TEXT_COLOR, DEFAULT_BUTTON_ACTIVE_TEXT_COLOR,
-                    DEFAULT_BUTTON_BACKGROUND_COLOR, DEFAULT_BUTTON_ACTIVE_BACKGROUND_COLOR);
-        setLongPressTimeout(ViewConfiguration.getLongPressTimeout());
-        setLongPressRepeatDelay(DEFAULT_LONG_PRESS_REPEAT_DELAY);
+    super(context, attrs);
+
+    // DEFAULTS: If no theme file is found, use Black Background / White Text
+    int myBgColor = 0xFF000000; 
+    int myFgColor = 0xFFFFFFFF; 
+
+    try {
+        // Path to your active Termux theme
+        File colorFile = new File("/data/data/com.termux/files/home/.termux/colors.properties");
+
+        if (colorFile.exists()) {
+            Properties props = new Properties();
+            FileInputStream fis = new FileInputStream(colorFile);
+            props.load(fis);
+            fis.close();
+
+            // READ THEME COLORS
+            String bgHex = props.getProperty("background");
+            String fgHex = props.getProperty("foreground");
+
+            // PARSE COLORS (Add error checking if needed)
+            if (bgHex != null) myBgColor = Color.parseColor(bgHex);
+            if (fgHex != null) myFgColor = Color.parseColor(fgHex);
+        }
+    } catch (Exception e) {
+        e.printStackTrace(); // Keep defaults if error
     }
+
+    // APPLY BACKGROUND COLOR (The Strip)
+    this.setBackgroundColor(myBgColor);
+
+    setRepetitiveKeys(ExtraKeysConstants.PRIMARY_REPETITIVE_KEYS);
+    setSpecialButtons(getDefaultSpecialButtons(this));
+
+    // APPLY TEXT COLOR (The Buttons)
+    // Arg 1 & 2: Text Color (Matches Terminal Foreground)
+    // Arg 3: Button Background (Transparent, so Strip BG shows through)
+    // Arg 4: Pressed Highlight (Semi-transparent White)
+    setButtonColors(myFgColor, myFgColor, 
+                    0x00000000, 0x33FFFFFF);
+
+    setLongPressTimeout(ViewConfiguration.getLongPressTimeout());
+    setLongPressRepeatDelay(DEFAULT_LONG_PRESS_REPEAT_DELAY);
+}
+
 
 
     /** Get {@link #mExtraKeysViewClient}. */
