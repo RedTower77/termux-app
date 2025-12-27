@@ -197,7 +197,7 @@ public final class ExtraKeysView extends GridLayout {
 
     public ExtraKeysView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        this.setBackgroundColor(0xFFFFFFFF);
         setRepetitiveKeys(ExtraKeysConstants.PRIMARY_REPETITIVE_KEYS);
         setSpecialButtons(getDefaultSpecialButtons(this));
         setButtonColors(DEFAULT_BUTTON_TEXT_COLOR, DEFAULT_BUTTON_ACTIVE_TEXT_COLOR,
