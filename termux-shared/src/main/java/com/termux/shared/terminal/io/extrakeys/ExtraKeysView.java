@@ -114,7 +114,7 @@ public final class ExtraKeysView extends GridLayout {
     /** Defines the default value for {@link #mButtonTextColor}. */
     public static final int DEFAULT_BUTTON_TEXT_COLOR = 0xFF000000;
     /** Defines the default value for {@link #mButtonActiveTextColor}. */
-    public static final int DEFAULT_BUTTON_ACTIVE_TEXT_COLOR = 0xFF7F7F7F;
+    public static final int DEFAULT_BUTTON_ACTIVE_TEXT_COLOR = 0xFFCCCCCC;
     /** Defines the default value for {@link #mButtonBackgroundColor}. */
     public static final int DEFAULT_BUTTON_BACKGROUND_COLOR = 0xFFFFFFFF;
     /** Defines the default value for {@link #mButtonActiveBackgroundColor}. */
@@ -241,7 +241,7 @@ public final class ExtraKeysView extends GridLayout {
     // Arg 3: Button Background (Transparent, so Strip BG shows through)
     // Arg 4: Pressed Highlight (Semi-transparent White)
     setButtonColors(myFgColor, myFgColor, 
-                    0x00000000, 0xFF7F7F7F);
+                    0x00000000, 0xFFCCCCCC);
 
     setLongPressTimeout(ViewConfiguration.getLongPressTimeout());
     setLongPressRepeatDelay(DEFAULT_LONG_PRESS_REPEAT_DELAY);
