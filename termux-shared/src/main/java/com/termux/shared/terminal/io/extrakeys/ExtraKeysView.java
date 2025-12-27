@@ -241,7 +241,7 @@ public final class ExtraKeysView extends GridLayout {
     // Arg 3: Button Background (Transparent, so Strip BG shows through)
     // Arg 4: Pressed Highlight (Semi-transparent White)
     setButtonColors(myFgColor, myFgColor, 
-                    0x00000000, 0x33FFFFFF);
+                    0x00000000, 0xFF7F7F7F);
 
     setLongPressTimeout(ViewConfiguration.getLongPressTimeout());
     setLongPressRepeatDelay(DEFAULT_LONG_PRESS_REPEAT_DELAY);
