@@ -235,13 +235,13 @@ public final class ExtraKeysView extends GridLayout {
 
     setRepetitiveKeys(ExtraKeysConstants.PRIMARY_REPETITIVE_KEYS);
     setSpecialButtons(getDefaultSpecialButtons(this));
-
+        
     // APPLY TEXT COLOR (The Buttons)
     // Arg 1 & 2: Text Color (Matches Terminal Foreground)
     // Arg 3: Button Background (Transparent, so Strip BG shows through)
     // Arg 4: Pressed Highlight (Semi-transparent White)
-    setButtonColors(myFgColor, myFgColor, 
-                    0x00000000, 0xFFCCCCCC);
+    setButtonColors(myFgColor, 0xFFFF0000, 
+                    0x00000000, 0x00000000);
 
     setLongPressTimeout(ViewConfiguration.getLongPressTimeout());
     setLongPressRepeatDelay(DEFAULT_LONG_PRESS_REPEAT_DELAY);
